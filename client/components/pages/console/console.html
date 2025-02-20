@@ -1,1 +1,72 @@
-Console
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monaco Editor Example</title>
+    <style>
+        #editor-container {
+            width: 800px;
+            height: 600px;
+            border: 1px solid #ccc;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="editor-container"></div>
+
+    <script>
+        // Load Monaco Editor from CDN
+        const loadMonaco = () => {
+            // Load the loader script
+            const loaderScript = document.createElement('script');
+            loaderScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/loader.min.js';
+            loaderScript.async = true;
+            
+            loaderScript.onload = () => {
+                // Configure AMD loader for Monaco
+                require.config({
+                    paths: {
+                        vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs'
+                    }
+                });
+
+                // Load Monaco Editor
+                require(['vs/editor/editor.main'], function() {
+                    // Initialize the editor
+                    const editor = monaco.editor.create(document.getElementById('editor-container'), {
+                        value: '// Write your code here\n',
+                        language: 'javascript',
+                        theme: 'vs-dark',
+                        automaticLayout: true,
+                        minimap: {
+                            enabled: true
+                        },
+                        fontSize: 14,
+                        lineNumbers: 'on',
+                        roundedSelection: false,
+                        scrollBeyondLastLine: false,
+                        readOnly: false,
+                        cursorStyle: 'line',
+                        tabSize: 2,
+                    });
+
+                    // Add event listener for content changes
+                    editor.onDidChangeModelContent(() => {
+                        console.log('Content changed:', editor.getValue());
+                    });
+
+                    // Make editor accessible globally (for debugging)
+                    window.editor = editor;
+                });
+            };
+
+            document.body.appendChild(loaderScript);
+        };
+
+        // Initialize Monaco when the page loads
+        window.onload = loadMonaco;
+    </script>
+</body>
+</html>
