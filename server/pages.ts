@@ -4,7 +4,7 @@ import "../shared/dependencies.js";
 
 export async function onGET (ctx:ServerContext) : Promise<Response> {
     try {
-        const document = await renderDocument$({ file: `/console/client/components/pages/console/console1.html` }, ctx) as string;
+        const document = await renderDocument$({ file: `/console/client/components/pages/console/console.html` }, ctx) as string;
         return ctx.response.html('<!doctype html>' + document);
     }
     catch (e) {
